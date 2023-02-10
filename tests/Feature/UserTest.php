@@ -3,21 +3,32 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use App\Notifications\SendVerifyWithQueueNotification;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
-use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class UserTest extends TestCase
 {
 
+	use RefreshDatabase;
+
 	protected User $user;
+
+	protected function setUp(): void
+	{
+		parent::setUp();
+		$this->user = User::factory()->create();
+		Mail::fake();
+	}
 
 	public function testRegister()
 	{
 		Storage::fake('public');
 		$file = UploadedFile::fake()->image('avatar.jpg');
-		$response = $this->post('api/user/register', [
+		$response = $this->post(route('user.register'), [
 			'name'                  => 'Shami',
 			'email'                 => 'Shamil79797@gmail.com',
 			'phone_number'          => '+74575823423',
@@ -36,35 +47,42 @@ class UserTest extends TestCase
 		]);
 	}
 
+	public function testEmailVerify()
+	{
+		$notification = new SendVerifyWithQueueNotification();
+		$user = User::factory()->create(['email_verified_at' => null]);
+		$this->assertFalse($user->hasVerifiedEmail());
+
+		$mail = $notification->toMail($user);
+		$url = $mail->actionUrl;
+
+		$this->actingAs($user)->get($url);
+
+		$this->assertTrue(User::find($user->id)->hasVerifiedEmail());
+	}
+
 	public function testLogin()
 	{
-		$response = $this->post('api/user/login',
+		$response = $this->post(route('user.login'),
 			['email' => $this->user->email, 'password' => 'password', 'device' => 'test']);
 		$response->assertHeader('Authorization');
 	}
 
 	public function testTokens()
 	{
-		Sanctum::actingAs(
-			$this->user,
-			['*']
-		);
-		$response = $this->actingAs($this->user)->get('/api/user/tokens');
-		$response->assertJsonStructure(
-			[
-				'name',
-				'abilities',
-				'last_used_at',
-				'expires_at',
+		for ($i = 0; $i < 3; $i++) {
+			$this->user->createToken('qwer');
+		}
+		$response = $this->actingAs($this->user)->get(route('user.tokens'));
+		$response->assertStatus(200)->assertJsonStructure([
+			'data' => [
+				'*' => [
+					'name',
+					'abilities',
+					'last_used_at',
+					'expires_at',
+				],
 			],
-		);
+		]);
 	}
-
-	protected function setUp(): void
-	{
-		parent::setUp();
-		$this->artisan('migrate:fresh');
-		$this->user = User::factory()->create();
-	}
-
 }
