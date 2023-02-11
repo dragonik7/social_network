@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Notifications\SendVerifyWithQueueNotification;
+use App\Notifications\User\SendVerifyWithQueueNotification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;

@@ -3,7 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\User;
-use App\Notifications\SendVerifyWithQueueNotification;
+use App\Notifications\User\SendVerifyWithQueueNotification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Mail;
@@ -83,6 +83,15 @@ class UserTest extends TestCase
 					'expires_at',
 				],
 			],
+		]);
+	}
+
+	public function testDeleteToken()
+	{
+		$token = $this->user->createToken('qwer');
+		$response = $this->delete(route('user.delete-token', ['id' => $token->accessToken->id]));
+		$this->assertDatabaseMissing('personal_access_tokens', [
+			'id' => $token->accessToken->getKey(),
 		]);
 	}
 }

@@ -37,4 +37,10 @@ class UserController extends Controller
 		$tokens = Auth::user()->tokens()->get();
 		return TokensUserResource::collection($tokens);
 	}
+
+	public function deleteToken($id)
+	{
+		Auth::user()->tokens()->where('id', $id)->delete();
+		return response()->json(['Success'], 200);
+	}
 }

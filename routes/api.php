@@ -27,7 +27,11 @@ Route::group(['prefix' => '/user'], function ()
 	Route::group(['middleware' => 'auth:sanctum'], function ()
 	{
 		Route::get('/verify/{id}/{hash}', [UserController::class, 'verify'])->name('verification.verify');
-		Route::get('/tokens', [UserController::class, 'tokens'])->name('user.tokens');
+		Route::group(['prefix' => 'token'], function ()
+		{
+			Route::get('/all', [UserController::class, 'tokens'])->name('user.tokens');
+			Route::delete('/{id}', [UserController::class, 'deleteToken'])->name('user.delete-token');
+		});
 	});
 });
 
