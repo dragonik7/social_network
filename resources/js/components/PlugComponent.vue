@@ -1,6 +1,7 @@
 <template>
-	<div>
+	<div class="">
 		This is plug component
+
 	</div>
 </template>
 

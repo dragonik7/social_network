@@ -40,7 +40,7 @@ class UserController extends Controller
 
 	public function deleteToken($id)
 	{
-		Auth::user()->tokens()->where('id', $id)->delete();
+		Auth::user()->tokens()->where('id','=', $id)->delete();
 		return response()->json(['Success'], 200);
 	}
 }

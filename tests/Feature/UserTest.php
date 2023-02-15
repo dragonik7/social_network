@@ -8,6 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+use Laravel\Sanctum\PersonalAccessToken;
 use Tests\TestCase;
 
 class UserTest extends TestCase
@@ -27,7 +28,7 @@ class UserTest extends TestCase
 	public function testRegister()
 	{
 		Storage::fake('public');
-		$file = UploadedFile::fake()->image('avatar.jpg');
+		$file = UploadedFile::fake()->image('avatar.jpg', 100, 100);
 		$response = $this->post(route('user.register'), [
 			'name'                  => 'Shami',
 			'email'                 => 'Shamil79797@gmail.com',
@@ -89,7 +90,7 @@ class UserTest extends TestCase
 	public function testDeleteToken()
 	{
 		$token = $this->user->createToken('qwer');
-		$response = $this->delete(route('user.delete-token', ['id' => $token->accessToken->id]));
+		$response = $this->delete(route('user.delete-token', ['id' => $token->accessToken->id]), [],['Authorization' => 'Bearer ' . $token->plainTextToken]);
 		$this->assertDatabaseMissing('personal_access_tokens', [
 			'id' => $token->accessToken->getKey(),
 		]);
