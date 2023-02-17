@@ -7,5 +7,7 @@
 @tailwind components;
 @tailwind utilities;
 </style>
+
 <script setup>
+
 </script>
