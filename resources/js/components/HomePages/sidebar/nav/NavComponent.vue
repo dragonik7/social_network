@@ -1,36 +1,41 @@
 <template>
 	<div>
-		<ul id="ul" class="grid gap-y-2 p-4">
-			<li>
-				<a href="#">
+		<ul id="ul" class="grid gap-y-2">
+			<li class="flex align-items-center justify-between hover:bg-[#181924F7] transition easy-in-out rounded-lg py-2 px-3">
+				<a class="w-full" href="#">
 					<p>Друзья</p>
-					<i class="bi bi-person-circle"></i> </a>
+					<i class=""></i>
+				</a>
 			</li>
 			<div class="line mx-auto"></div>
-			<li>
-				<a href="#">
+			<li class="flex align-items-center justify-between hover:bg-[#181924F7] transition easy-in-out rounded-lg py-2 px-3">
+				<a class="w-full" href="#">
 					<p>Группы</p>
-					<i class="bi bi-people"></i> </a>
+					<i class="bi bi-people"></i>
+				</a>
 			</li>
 			<div class="line mx-auto"></div>
-			<li>
-				<a href="#">
+			<li class="flex align-items-center justify-between hover:bg-[#181924F7] transition easy-in-out rounded-lg py-2 px-3">
+				<a class="w-full" href="#">
 					<p>Медиа</p>
-					<i class="bi bi-collection"></i> </a>
+					<i class="bi bi-collection"></i>
+				</a>
 			</li>
 			<div class="line mx-auto"></div>
 
-			<li>
-				<a href="#">
+			<li class="flex align-items-center justify-between hover:bg-[#181924F7] transition easy-in-out rounded-lg py-2 px-3">
+				<a class="w-full" href="#">
 					<p>Сообщения</p>
-					<i class="bi bi-chat"></i> </a>
+					<i class="bi bi-chat"></i>
+				</a>
 			</li>
 			<div class="line mx-auto"></div>
 
-			<li>
-				<a href="#">
+			<li class="flex align-items-center justify-between hover:bg-[#181924F7] transition easy-in-out rounded-lg py-2 px-3">
+				<a class="w-full" href="#">
 					<p>Музыка</p>
-					<i class="bi bi-music-note-beamed"></i> </a>
+					<i class="bi bi-music-note-beamed"></i>
+				</a>
 			</li>
 			<div class="line mx-auto"></div>
 
@@ -39,8 +44,9 @@
 </template>
 
 <script>
+
 export default {
-	name: "NavComponent"
+	name: "NavComponent",
 }
 </script>
 
@@ -50,7 +56,6 @@ a {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	padding: 0 7px 0 7px;
 }
 
 .line {
@@ -60,9 +65,5 @@ a {
 	transition: .2s all linear;
 }
 
-ul {
-	border-radius: 15px;
-	box-shadow: 0 0 5px 1px #f0c5c5;
-}
 
 </style>

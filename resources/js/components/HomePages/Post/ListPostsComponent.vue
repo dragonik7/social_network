@@ -1,15 +1,14 @@
 <template>
-	<div class="flex ml-5">
-		<div id="post-card" class="rounded-lg shadow-lg bg-white max-w-sm">
+	<div class="flex align-items-center justify-center">
+		<div id="post-component" class="rounded-lg px-10">
 			<div class="py-4 mx-auto w-[700px]">
 				<div class="flex align-items-center justify-between">
-
 					<div class="flex align-items-center justify-center gap-4">
-						<a id="post-link" href="#"> <img id="post-ava"
-														 src="https://pixelbox.ru/wp-content/uploads/2021/04/cats-ava-steam-42.jpg"
-														 alt=""> </a>
+						<a class="rounded-[50%] w-[60px]" href="#">
+							<img class="rounded-[50%]" src="https://pixelbox.ru/wp-content/uploads/2021/04/cats-ava-steam-42.jpg" alt="">
+						</a>
 						<div class="flex flex-col align-items-center justify-center">
-							<a href="#">Andrey Andreev</a>
+							<a class="hover:opacity-80 transition ease-in-out" href="#">Andrey Andreev</a>
 							<p class="text-xs opacity-90">3 минуты назад</p>
 						</div>
 					</div>
@@ -23,7 +22,7 @@
 				</div>
 
 				<div class="mt-2 flex flex-col align-items-center justify-center mt-5">
-					<p id="post-description" class="text-gray-700 text-base mb-4 border-t-[1.5px] pt-3">
+					<p id="post-description" class="text-base mb-4 border-t-[1.5px] pt-3">
 						Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab aliquid aperiam beatae commodi
 						consequatur, cum debitis deleniti dolore dolores eius eligendi expedita fugit incidunt iure modi
 						odit officiis omnis praesentium provident quam quibusdam recusandae reiciendis rem repudiandae
@@ -49,28 +48,12 @@ export default {
 </script>
 
 <style scoped>
-#post-card {
-	min-width: 800px;
+#post-component {
+	box-shadow: 0 0 10px 1px rgba(28, 27, 27, 0.96);
 }
-
 #post-more:hover .dot {
 	background-color: black;
 	transition: all .2s linear;
-}
-/*#post-description {*/
-/*	border-radius: 10px;*/
-/*	padding: 10px;*/
-/*	min-height: 150px;*/
-/*	box-shadow: 0 0 10px 1px #aa9494;*/
-/*}*/
-
-#post-link {
-	border-radius: 50%;
-	width: 60px;
-}
-
-#post-ava {
-	border-radius: 50%;
 }
 
 .dot {
