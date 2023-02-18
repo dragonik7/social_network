@@ -13,6 +13,7 @@ import {faYoutube} from '@fortawesome/free-brands-svg-icons'
 
 library.add(faYoutube, faShare)
 
+
 createApp(App)
 	.component('font-awesome-icon', FontAwesomeIcon)
 	.use(store)
