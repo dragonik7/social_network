@@ -4,10 +4,13 @@ namespace App\Models;
 
 use App\Notifications\User\SendVerifyWithQueueNotification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -47,8 +50,29 @@ class User extends Authenticatable implements MustVerifyEmail
 		'email_verified_at' => 'datetime',
 	];
 
+	public function avatar(): Attribute
+	{
+		return Attribute::make(
+			get: fn($value) => (str_starts_with($value,
+					'http') or is_null($value)) ? $value : config('app.url').'storage/'.$value,
+			set: fn($value) => $value,
+		);
+	}
+	public function password(): Attribute
+	{
+		return Attribute::make(
+			get: fn($value) => $value,
+			set: fn($value) => Hash::make($value),
+		);
+	}
+
 	public function sendEmailVerificationNotification()
 	{
 		$this->notify(new SendVerifyWithQueueNotification());
+	}
+
+	public function posts(): HasMany
+	{
+		return $this->hasMany(Post::class, 'user_id', 'id');
 	}
 }

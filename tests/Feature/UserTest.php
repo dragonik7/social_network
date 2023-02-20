@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Notifications\User\SendVerifyWithQueueNotification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\PersonalAccessToken;
@@ -27,8 +28,7 @@ class UserTest extends TestCase
 
 	public function testRegister()
 	{
-		Storage::fake('public');
-		$file = UploadedFile::fake()->image('avatar.jpg', 100, 100);
+		$file = UploadedFile::fake()->image('avatar.jpg');
 		$response = $this->post(route('user.register'), [
 			'name'                  => 'Shami',
 			'email'                 => 'Shamil79797@gmail.com',
@@ -37,6 +37,7 @@ class UserTest extends TestCase
 			'password'              => 'password',
 			'password_confirmation' => 'password',
 		]);
+		Storage::disk('public')->assertExists('avatar/' . $file->hashName());
 		$response->assertJsonStructure([
 			'data' => [
 				'id',
@@ -65,7 +66,7 @@ class UserTest extends TestCase
 	public function testLogin()
 	{
 		$response = $this->post(route('user.login'),
-			['email' => $this->user->email, 'password' => 'password', 'device' => 'test']);
+			['email' => $this->user->email, 'password' => 'password']);
 		$response->assertHeader('Authorization');
 	}
 

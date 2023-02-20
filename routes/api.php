@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PostsController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -15,17 +16,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request)
-{
-	return $request->user();
-})->name('user');
-
 Route::group(['prefix' => '/user'], function ()
 {
 	Route::post('/register', [UserController::class, 'register'])->name('user.register');
 	Route::post('/login', [UserController::class, 'login'])->name('user.login');
 	Route::group(['middleware' => 'auth:sanctum'], function ()
 	{
+		Route::get('/', [UserController::class, 'info']);
 		Route::get('/verify/{id}/{hash}', [UserController::class, 'verify'])->name('verification.verify');
 		Route::group(['prefix' => 'token'], function ()
 		{
@@ -34,4 +31,12 @@ Route::group(['prefix' => '/user'], function ()
 		});
 	});
 });
-
+Route::group(['prefix' => '/posts'], function(){
+	Route::get('/list', [PostsController::class, 'getList'])->name('posts.list');
+	Route::get('{post}', [PostsController::class, 'show'])->name('posts.show');
+	Route::group(['middleware' => 'auth:sanctum'], function (){
+		Route::post('/', [PostsController::class, 'store'])->name('posts.create');
+		Route::patch('/{post}/', [PostsController::class, 'update'])->name('posts.update');
+		Route::delete('/{post}', [PostsController::class, 'destroy'])->name('posts.delete');
+	});
+});
