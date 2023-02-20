@@ -18,11 +18,4 @@ class RegisterUserRequest extends BaseApiRequest
 			'password'     => ['string', 'min:4', 'max:255', 'required', 'confirmed'],
 		];
 	}
-
-	protected function passedValidation()
-	{
-		$this->merge(
-			['password' => Hash::make($this->input('password'))]
-		);
-	}
 }

@@ -9,16 +9,16 @@ use Carbon\Carbon;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class UserService
 {
 
 	public function register(RegisterUserRequest $request)
 	{
-		$data = $request->input();
+		$data = $request->toArray();
 		if ($request->hasFile('avatar')) {
-			$data['avatar'] = $request->file('avatar')
-				->storeAs('User/avatar', 'avatar_'.now()->format('Y.m.d_H:i:s'), 'public');
+			$data['avatar'] = Storage::disk('public')->putFile('avatar', $request->file('avatar'));
 		}
 		$user = User::create($data);
 		if ($user) {
@@ -35,7 +35,6 @@ class UserService
 	public function login(LoginUserRequest $request)
 	{
 		$user = User::withTrashed()->firstWhere('email', '=', $request->email);
-
 		if (!$user || !Hash::check($request->password, $user->password)) {
 			throw new HttpResponseException(
 				response()->json(['Password or email incorrect'], 400),

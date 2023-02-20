@@ -24,9 +24,4 @@ class InfoUserResource extends JsonResource
 			'phone_number' => $this->phone_number,
 		];
 	}
-
-	public function withResponse($request, $response)
-	{
-		return $response->header('Authorization', "Bearer ".$this->token);
-	}
 }
