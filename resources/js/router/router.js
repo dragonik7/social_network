@@ -9,27 +9,27 @@ const routes = [
 	{
 		path: "/shop",
 		name: "shop",
-		component: () => import('../components/PlugComponent.vue'),
+		component: () => import('../components/Pages/PlugComponent.vue'),
 	},
 	{
 		path: "/features",
 		name: "features",
-		component: () => import('../components/PlugComponent.vue'),
+		component: () => import('../components/Pages/PlugComponent.vue'),
 	},
 	{
 		path: "/blogs",
 		name: "blogs",
-		component: () => import('../components/PlugComponent.vue'),
+		component: () => import('../components/Pages/PlugComponent.vue'),
 	},
 	{
 		path: "/pages",
 		name: "pages",
-		component: () => import('../components/PlugComponent.vue'),
+		component: () => import('../components/Pages/PlugComponent.vue'),
 	},
 	{
 		path: "/contact",
 		name: "contact",
-		component: () => import('../components/PlugComponent.vue'),
+		component: () => import('../components/Pages/PlugComponent.vue'),
 	}
 ];
 

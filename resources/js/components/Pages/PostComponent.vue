@@ -17,9 +17,9 @@
 
 <script>
 
-import HeaderComponent from "./header/HeaderComponent.vue";
-import SidebarComponent from "./sidebar/LeftSidebarComponent.vue";
-import ListPostsComponent from "./Post/ListPostsComponent.vue";
+import HeaderComponent from "../HomePages/header/HeaderComponent.vue";
+import SidebarComponent from "../HomePages/sidebar/LeftSidebarComponent.vue";
+import ListPostsComponent from "../HomePages/Post/ListPostsComponent.vue";
 
 export default {
 	name: "PostComponent",
