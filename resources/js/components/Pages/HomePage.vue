@@ -33,12 +33,12 @@
 </template>
 
 <script>
-import SidebarComponent from "../sidebar/LeftSidebarComponent.vue";
-import PostComponent from "../Post/ListPostsComponent.vue";
-import HeaderComponent from "../header/HeaderComponent.vue";
-import RightSidebarComponent from "../sidebar/RightSidebarComponent.vue";
-import LeftSidebarComponent from "../sidebar/LeftSidebarComponent.vue";
-import CreatePostComponent from "../CreatePostComponent.vue";
+import SidebarComponent from "../PostComponent/sidebar/LeftSidebarComponent.vue";
+import PostComponent from "../PostComponent/Post/ListPostsComponent.vue";
+import HeaderComponent from "../PostComponent/header/HeaderComponent.vue";
+import RightSidebarComponent from "../PostComponent/sidebar/RightSidebarComponent.vue";
+import LeftSidebarComponent from "../PostComponent/sidebar/LeftSidebarComponent.vue";
+import CreatePostComponent from "../PostComponent/CreatePostComponent.vue";
 
 export default {
 	name: "HomeComponent",

@@ -4,32 +4,32 @@ const routes = [
 	{
 		path: "/",
 		name: "home",
-		component: () => import('../components/HomePages/Pages/HomeComponent.vue'),
+		component: () => import('../components/Pages/HomePage.vue'),
 	},
 	{
 		path: "/shop",
 		name: "shop",
-		component: () => import('../components/Pages/PlugComponent.vue'),
+		component: () => import('../components/Pages/PlugPage.vue'),
 	},
 	{
 		path: "/features",
 		name: "features",
-		component: () => import('../components/Pages/PlugComponent.vue'),
+		component: () => import('../components/Pages/PlugPage.vue'),
 	},
 	{
 		path: "/blogs",
 		name: "blogs",
-		component: () => import('../components/Pages/PlugComponent.vue'),
+		component: () => import('../components/Pages/PlugPage.vue'),
 	},
 	{
 		path: "/pages",
 		name: "pages",
-		component: () => import('../components/Pages/PlugComponent.vue'),
+		component: () => import('../components/Pages/PlugPage.vue'),
 	},
 	{
 		path: "/contact",
 		name: "contact",
-		component: () => import('../components/Pages/PlugComponent.vue'),
+		component: () => import('../components/Pages/PlugPage.vue'),
 	}
 ];
 
