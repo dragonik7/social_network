@@ -43,7 +43,7 @@
 
 <script>
 export default {
-	name: "PostComponent"
+	name: "PostComponent",
 }
 </script>
 
