@@ -1,6 +1,6 @@
 <template>
 	<div class="flex align-items-center justify-center">
-		<div class="bgShadow flex items-center justify-around mx-auto w-[800px] py-4 rounded-lg">
+		<div class="bgShadow w-full w-100 flex items-center justify-between px-10 py-4 rounded-lg">
 			<div class="flex gap-x-3 items-center justify-between">
 				<img class="w-[50px] rounded-[50%]"
 					 src="https://pixelbox.ru/wp-content/uploads/2022/08/avatars-viber-pixelbox.ru-29.jpg"

@@ -19,9 +19,9 @@ class ListPostResourceCollection extends JsonResource
 		return [
 			'id' => $this->id,
 			'text' => $this->text,
-			'images' => $this->images,
+			'images' => json_decode($this->images),
 			'user' => ShortInfoUserResource::make($this->user),
-			'created_at' => $this->created_at
+			'created_at' => $this->created_at,
 		];
 	}
 }

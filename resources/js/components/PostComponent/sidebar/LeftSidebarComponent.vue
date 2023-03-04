@@ -1,34 +1,83 @@
 <template>
-	<div class="flex flex-col justify-between rounded-lg h-screen p-4">
-		<div class="flex flex-col gap-y-10">
-			<nav-component/>
-		</div>
-
-		<div class="flex justify-between align-items-center">
-			<a id="settings" href="#"><i class="bi bi-gear"></i>Иконка</a>
-			<a id="logout" href="#" class="py-2 px-5">Выйти</a>
-		</div>
+	<div class="flex flex-col justify-start rounded-lg bgShadow rounded-lg h-full py-8 px-4 w-[100%]">
+		<ul id="ulList" class="flex flex-col gap-y-3 transition-[all .2s linear]">
+			<router-link v-for="link in links" class="routerItem" :to="link.href">
+				<div class="flex w-full items-center justify-between hover:bg-[#181924F7] rounded-lg py-2 px-4">
+					<li id="news">
+						{{ link.title }}
+					</li>
+					<span class="icon">{{ link.icon }}</span>
+				</div>
+			</router-link>
+		</ul>
 	</div>
 </template>
 
 <script>
-import NavComponent from "./nav/NavComponent.vue";
-
 export default {
 	name: "LeftSidebarComponent",
-	components: {NavComponent}
+	data() {
+		return {
+			onSwRSbar: Boolean,
+			links: [
+				{
+					title: 'Новости',
+					href: '/',
+					icon: 'i',
+				},
+				{
+					title: 'Друзья',
+					href: '/friends',
+					icon: 'i',
+				},
+				{
+					title: 'Сообщений',
+					href: '/messages',
+					icon: 'i',
+				},
+				{
+					title: 'Группы',
+					href: 'groups',
+					icon: 'i',
+				},
+				{
+					title: 'Медиа',
+					href: 'media',
+					icon: 'i',
+				},
+			]
+		}
+	},
+	methods: {
+		watchSW() {
+			let ulList = document.querySelectorAll('#ulList')[0];
+			for (let i = 0; i < ulList.childNodes.length; i++) {
+				this.isActive(ulList, i)
+			}
+		},
+		isActive(ulList, i) {
+			ulList.childNodes[i].addEventListener('click', () => {
+				if (ulList.childNodes[i].href === 'http://localhost/') {
+					this.onSwRSbar = true;
+					this.switchRSbar()
+				} else {
+					this.onSwRSbar = false;
+					this.switchRSbar()
+				}
+			});
+		},
+		switchRSbar() {
+			this.$emit('switchRSbar', this.onSwRSbar);
+		},
+	},
+	mounted() {
+		this.watchSW();
+	}
 }
 </script>
 
-<style scoped>
-#logout {
-	border-radius: 10px;
-	box-shadow: 0 0 5px 1px #5d5b5b;
-	transition: .4s all linear;
-}
-
-#logout:active {
-	box-shadow: 0 0 10px 1px #4a4747 inset;
-	transition: .4s all linear;
-}
+<style>
 </style>
+
+
+

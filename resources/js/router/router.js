@@ -6,19 +6,25 @@ const routes = [
 		name: "home",
 		component: () => import('../components/Pages/HomePage.vue'),
 	},
+
 	{
-		path: "/shop",
-		name: "shop",
+		path: "/friends",
+		name: "friends",
 		component: () => import('../components/Pages/PlugPage.vue'),
 	},
 	{
-		path: "/features",
-		name: "features",
+		path: "/messages",
+		name: "messages",
+		component: () => import('../components/Pages/MessagesPage.vue'),
+	},
+	{
+		path: "/groups",
+		name: "groups",
 		component: () => import('../components/Pages/PlugPage.vue'),
 	},
 	{
-		path: "/blogs",
-		name: "blogs",
+		path: "/media",
+		name: "media",
 		component: () => import('../components/Pages/PlugPage.vue'),
 	},
 	{
