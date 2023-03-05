@@ -14,7 +14,7 @@ class PostsController extends Controller
 
 	public function getList()
 	{
-		$posts = Post::query()->paginate(3);
+		$posts = Post::query()->paginate(10);
 		return ListPostResourceCollection::collection($posts);
 
 	}
