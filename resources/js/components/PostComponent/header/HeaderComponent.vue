@@ -1,7 +1,8 @@
 <template>
 	<div class="container py-5 px-20 rounded-lg flex align-items-center justify-between">
-		<a href="#" class="w-[150px]"> <img src="../../../../assets/logo/logo.png" alt="logo"> </a>
-
+		<router-link :to="{name:'home'}"  class="w-[150px]">
+			<img src="../../../../assets/logo/logo.png" alt="logo">
+		</router-link>
 		<div class="flex align-items-center justify-between gap-x-10">
 			<div class="flex flex-col align-items-center justify-center">
 				<div class="xl:w-50">

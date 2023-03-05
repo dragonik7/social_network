@@ -7,8 +7,6 @@ use App\Http\Requests\Post\PostUpdateRequest;
 use App\Http\Resources\Post\ListPostResourceCollection;
 use App\Http\Resources\Post\PostShowResource;
 use App\Models\Post;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class PostsController extends Controller
