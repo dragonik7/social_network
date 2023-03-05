@@ -14,61 +14,64 @@
 </template>
 
 <script>
+import {ref} from "vue";
+
 export default {
 	name: "LeftSidebarComponent",
-	data() {
-		return {
-			onSwRSbar: Boolean,
-			links: [
-				{
-					title: 'Новости',
-					href: '/',
-					icon: 'i',
-				},
-				{
-					title: 'Друзья',
-					href: '/friends',
-					icon: 'i',
-				},
-				{
-					title: 'Сообщений',
-					href: '/messages',
-					icon: 'i',
-				},
-				{
-					title: 'Группы',
-					href: 'groups',
-					icon: 'i',
-				},
-				{
-					title: 'Медиа',
-					href: 'media',
-					icon: 'i',
-				},
-			]
-		}
-	},
-	methods: {
-		watchSW() {
+	setup(props, {emit}) {
+		const onSwRSbar = ref(false)
+		const links = [
+			{
+				title: 'Новости',
+				href: '/',
+				icon: 'i',
+			},
+			{
+				title: 'Друзья',
+				href: '/friends',
+				icon: 'i',
+			},
+			{
+				title: 'Сообщений',
+				href: '/messages',
+				icon: 'i',
+			},
+			{
+				title: 'Группы',
+				href: 'groups',
+				icon: 'i',
+			},
+			{
+				title: 'Медиа',
+				href: 'media',
+				icon: 'i',
+			},
+		]
+
+		function watchSW() {
 			let ulList = document.querySelectorAll('#ulList')[0];
 			for (let i = 0; i < ulList.childNodes.length; i++) {
-				this.isActive(ulList, i)
+				isActive(ulList, i)
 			}
-		},
-		isActive(ulList, i) {
-			ulList.childNodes[i].addEventListener('click', () => {
+		}
+		function isActive(ulList, i) {
+			ulList.childNodes[i].addEventListener('click', function() {
 				if (ulList.childNodes[i].href === 'http://localhost/') {
-					this.onSwRSbar = true;
-					this.switchRSbar()
+					onSwRSbar.value = true;
+					switchRSbar()
 				} else {
-					this.onSwRSbar = false;
-					this.switchRSbar()
+					onSwRSbar.value = false;
+					switchRSbar()
 				}
 			});
-		},
-		switchRSbar() {
-			this.$emit('switchRSbar', this.onSwRSbar);
-		},
+		}
+		function switchRSbar() {
+			emit("switchRSbar", onSwRSbar);
+		}
+
+		return {
+			links, watchSW
+		}
 	},
 	mounted() {
 		this.watchSW();
