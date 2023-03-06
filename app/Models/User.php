@@ -7,6 +7,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -54,7 +55,7 @@ class User extends Authenticatable implements MustVerifyEmail
 	{
 		return Attribute::make(
 			get: fn($value) => (str_starts_with($value,
-					'http') or is_null($value)) ? $value : config('app.url').'storage/'.$value,
+					'http') or is_null($value)) ? $value : url('storage/', $value),
 			set: fn($value) => $value,
 		);
 	}
@@ -74,5 +75,15 @@ class User extends Authenticatable implements MustVerifyEmail
 	public function posts(): HasMany
 	{
 		return $this->hasMany(Post::class, 'user_id', 'id');
+	}
+
+	public function sender_messages(): HasMany
+	{
+		return $this->hasMany(Message::class, 'user_id', 'id');
+	}
+
+	public function recipient_messages(): MorphMany
+	{
+		return $this->morphMany(Message::class, 'messageable');
 	}
 }

@@ -18,9 +18,9 @@ class PostFactory extends Factory
 			$images[] = fake()->imageUrl();
 		}
 		return [
-			'text' => fake()->sentence(10),
-			'images' => json_encode($images),
-			'user_id' => User::query()->get()->random()->id
+			'text'    => fake()->sentence(10),
+			'images'  => $images,
+			'user_id' => User::query()->get()->random()->id,
 		];
 	}
 }

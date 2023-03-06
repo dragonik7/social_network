@@ -1,8 +1,8 @@
 <?php
 
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\UserController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,12 +31,19 @@ Route::group(['prefix' => '/user'], function ()
 		});
 	});
 });
-Route::group(['prefix' => '/posts'], function(){
+Route::group(['prefix' => '/posts'], function ()
+{
 	Route::get('/list', [PostsController::class, 'getList'])->name('posts.list');
 	Route::get('{post}', [PostsController::class, 'show'])->name('posts.show');
-	Route::group(['middleware' => 'auth:sanctum'], function (){
+	Route::group(['middleware' => 'auth:sanctum'], function ()
+	{
 		Route::post('/', [PostsController::class, 'store'])->name('posts.create');
-		Route::patch('/{post}/', [PostsController::class, 'update'])->name('posts.update');
+		Route::post('/{post}/update', [PostsController::class, 'update'])->name('posts.update');
 		Route::delete('/{post}', [PostsController::class, 'destroy'])->name('posts.delete');
 	});
+});
+Route::group(['prefix' => '/messages', 'middleware' => 'auth:sanctum'], function ()
+{
+	Route::get('/', [ChatController::class, 'index'])->name('messages.index');
+	Route::post('/', [ChatController::class, 'store'])->name('messages.store');
 });

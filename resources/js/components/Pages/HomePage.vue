@@ -31,6 +31,10 @@ export default {
 	},
 	mounted() {
 		this.getPosts()
+		Echo.channel('chat')
+			.listen('MessageSentEvent', (data) => {
+				console.log(data)
+			})
 	}
 }
 </script>

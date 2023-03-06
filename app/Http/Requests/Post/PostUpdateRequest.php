@@ -2,17 +2,16 @@
 
 namespace App\Http\Requests\Post;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\BaseApiRequest;
 
-class PostUpdateRequest extends FormRequest
+class PostUpdateRequest extends BaseApiRequest
 {
 
 	public function rules(): array
 	{
 		return [
-			'text' => ['string', 'max:2048'],
+			'text'     => ['string', 'max:2048'],
 			'images.*' => ['image', 'max:4096'],
-			'images' => ['array']
 		];
 	}
 
