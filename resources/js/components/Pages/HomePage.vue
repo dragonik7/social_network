@@ -10,26 +10,24 @@
 <script>
 import PostComponent from "../PostComponent/Post/PostComponent.vue";
 import CreatePostComponent from "../PostComponent/CreatePostComponent.vue";
+import {ref} from "vue";
 
 
 export default {
 	name: "HomeComponent",
 	components: {PostComponent, CreatePostComponent},
 
-	data() {
-		return {
-			posts: Array,
-			show: true,
-		}
-	},
-
-	methods: {
-		getPosts() {
+	setup() {
+		const posts = ref(Array);
+		function getPosts() {
 			axios.get('api/posts/list')
 				.then(response => {
 					this.posts = response.data.data
 				})
-		},
+		}
+		return {
+			posts, getPosts
+		}
 	},
 	mounted() {
 		this.getPosts()
