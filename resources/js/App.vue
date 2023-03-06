@@ -14,7 +14,7 @@
 
 			<Transition v-show="isNews" id="rSidebar" name="rSbar">
 				<div class="w-1/5 w-100 bgShadow h-[100vh]">
-					<right-sidebar-component/>
+					<right-sidebar-component ref="a"/>
 				</div>
 			</Transition>
 
@@ -28,23 +28,19 @@
 import LeftSidebarComponent from "./components/PostComponent/sidebar/LeftSidebarComponent.vue";
 import RightSidebarComponent from "./components/PostComponent/sidebar/RightSidebarComponent.vue";
 import HeaderComponent from "./components/PostComponent/header/HeaderComponent.vue";
+import {ref} from "vue";
 
 export default {
 	components: {LeftSidebarComponent, RightSidebarComponent, HeaderComponent},
-	data() {
+	setup() {
+		const isNews = ref(true)
+		function isSwRSbar(onSwRSbar) {
+			isNews.value = onSwRSbar.value
+		}
 		return {
-			isNews: false,
+			isNews, isSwRSbar
 		}
 	},
-	mounted() {
-
-	},
-	methods: {
-		isSwRSbar(onSwRSbar) {
-			this.isNews = onSwRSbar
-		},
-	},
-
 }
 </script>
 
