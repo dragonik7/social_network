@@ -22,7 +22,7 @@
 
 			<div class="relative">
 				<div class="flex items-center justify-center gap-2">
-					<img class="w-[700px] h-[350px] rounded-lg" :src="post.images[0]" alt="post image">
+					<img class="w-[700px] h-[350px] rounded-lg" :src="post.images" alt="post image">
 				</div>
 			</div>
 
@@ -45,10 +45,6 @@ export default {
 	props: {
 		post: null,
 	},
-	data() {
-		return {}
-	},
-	computed: {}
 }
 </script>
 

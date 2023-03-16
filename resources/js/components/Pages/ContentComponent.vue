@@ -1,7 +1,7 @@
 <template>
 	<div class="w-[800px] mx-auto">
 		<create-post-component/>
-		<div class="mt-5" v-for="post in posts">
+		<div class="mt-5" v-for="post in postStore.posts">
 			<post-component :post="post"/>
 		</div>
 	</div>
@@ -10,31 +10,19 @@
 <script>
 import PostComponent from "../PostComponent/Post/PostComponent.vue";
 import CreatePostComponent from "../PostComponent/CreatePostComponent.vue";
-import {ref} from "vue";
-
+import usePostStore from "../../store/post";
 
 export default {
-	name: "HomeComponent",
+	name: "ContentComponent",
 	components: {PostComponent, CreatePostComponent},
-
 	setup() {
-		const posts = ref(Array);
-		function getPosts() {
-			axios.get('api/posts/list')
-				.then(response => {
-					this.posts = response.data.data
-				})
-		}
+		let postStore = usePostStore()
 		return {
-			posts, getPosts
+			postStore
 		}
 	},
 	mounted() {
-		this.getPosts()
-		Echo.channel('chat')
-			.listen('MessageSentEvent', (data) => {
-				console.log(data)
-			})
+		this.postStore.fetchPosts();
 	}
 }
 </script>

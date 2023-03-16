@@ -1,14 +1,50 @@
 <template>
-	<div class="flex flex-col justify-start rounded-lg bgShadow rounded-lg h-full py-8 px-4 w-[100%]">
-		<ul id="ulList" class="flex flex-col gap-y-3 transition-[all .2s linear]">
-			<router-link v-for="link in links" class="routerItem" :to="link.href">
+	<div class="flex flex-col justify-start rounded-lg bgShadow h-full py-8 px-4 w-[100%]">
+		<ul id="ulList" class="flex flex-col gap-y-3">
+			<router-link class="routerItem" :to="{name: 'content'}">
 				<div class="flex w-full items-center justify-between hover:bg-[#181924F7] rounded-lg py-2 px-4">
 					<li id="news">
-						{{ link.title }}
+						Новости
 					</li>
-					<span class="icon">{{ link.icon }}</span>
+					<i class="ri-article-line"></i>
 				</div>
 			</router-link>
+
+			<router-link class="routerItem" :to="{name: 'friends'}">
+				<div class="flex w-full items-center justify-between hover:bg-[#181924F7] rounded-lg py-2 px-4">
+					<li id="news">
+						Друзья
+					</li>
+					<i class="ri-user-line"></i>
+				</div>
+			</router-link>
+
+			<router-link class="routerItem" :to="{name: 'messages'}">
+				<div class="flex w-full items-center justify-between hover:bg-[#181924F7] rounded-lg py-2 px-4">
+					<li id="news">
+						Сообщения
+					</li>
+					<i class="ri-chat-3-line"></i>
+				</div>
+			</router-link>
+
+<!--			<router-link class="routerItem" :to="{name: 'groups'}">-->
+<!--				<div class="flex w-full items-center justify-between hover:bg-[#181924F7] rounded-lg py-2 px-4">-->
+<!--					<li id="news">-->
+<!--						Группы-->
+<!--					</li>-->
+<!--					<i class="ri-group-line"></i>-->
+<!--				</div>-->
+<!--			</router-link>-->
+
+<!--			<router-link class="routerItem" :to="{name: 'media'}">-->
+<!--				<div class="flex w-full items-center justify-between hover:bg-[#181924F7] rounded-lg py-2 px-4">-->
+<!--					<li id="news">-->
+<!--						Медиа-->
+<!--					</li>-->
+<!--					<i class="ri-camera-2-line"></i>-->
+<!--				</div>-->
+<!--			</router-link>-->
 		</ul>
 	</div>
 </template>
@@ -18,59 +54,30 @@ import {ref} from "vue";
 
 export default {
 	name: "LeftSidebarComponent",
-	setup(props, {emit}) {
+	setup(_, {emit}) {
 		const onSwRSbar = ref(false)
-		const links = [
-			{
-				title: 'Новости',
-				href: '/',
-				icon: 'i',
-			},
-			{
-				title: 'Друзья',
-				href: '/friends',
-				icon: 'i',
-			},
-			{
-				title: 'Сообщений',
-				href: '/messages',
-				icon: 'i',
-			},
-			{
-				title: 'Группы',
-				href: 'groups',
-				icon: 'i',
-			},
-			{
-				title: 'Медиа',
-				href: 'media',
-				icon: 'i',
-			},
-		]
 
 		function watchSW() {
 			let ulList = document.querySelectorAll('#ulList')[0];
-			for (let i = 0; i < ulList.childNodes.length; i++) {
-				isActive(ulList, i)
-			}
+			ulList.childNodes.forEach(function (el) {
+				isActive(el)
+			});
 		}
-		function isActive(ulList, i) {
-			ulList.childNodes[i].addEventListener('click', function() {
-				if (ulList.childNodes[i].href === 'http://localhost/') {
+
+		function isActive(el) {
+			el.addEventListener('click', function () {
+				if (el.href === 'http://localhost/content') {
 					onSwRSbar.value = true;
-					switchRSbar()
+					emit("switchRSbar", onSwRSbar);
 				} else {
 					onSwRSbar.value = false;
-					switchRSbar()
+					emit("switchRSbar", onSwRSbar);
 				}
 			});
 		}
-		function switchRSbar() {
-			emit("switchRSbar", onSwRSbar);
-		}
 
 		return {
-			links, watchSW
+			watchSW
 		}
 	},
 	mounted() {
