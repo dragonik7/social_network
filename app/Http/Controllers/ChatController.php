@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\MessageSentEvent;
-use App\Http\Requests\MessageCreateRequest;
+use App\Http\Requests\Chat\ChatCreateRequest;
+use App\Http\Resources\Chat\ChatIndexResource;
+use App\Http\Resources\Chat\ChatShowResource;
+use App\Http\Resources\Message\MessageResource;
+use App\Models\Chat;
 use App\Models\Message;
 use App\Repositories\Interface\FileInterface;
 use Illuminate\Http\Request;
@@ -21,29 +24,41 @@ class ChatController extends Controller
 
 	public function index()
 	{
-		return Message::query()->where('id', Auth::id())->get();
+		$userId = Auth::id();
+		$chat = Chat::query()
+			->join('chat_users', 'chats.id', 'chat_users.chat_id')
+			->where('chat_users.user_id', '=', $userId)
+			->select(['chats.*'])
+			->get();
+		return ChatIndexResource::collection($chat);
 	}
 
-	public function store(MessageCreateRequest $createRequest)
+	public function store(ChatCreateRequest $createRequest)
 	{
-		$messageData = $createRequest->all();
+		$chatData = $createRequest->all();
 		if ($createRequest->hasFile('files')) {
-			$messageData['files'] = $this->file->saveFiles($messageData['files'], 'messages_file');
+			$chatData['images'] = $this->file->saveFiles($chatData['images'], 'chats_images');
 		}
-		$message = Auth::user()->sender_messages()->create($messageData);
-		broadcast((new MessageSentEvent($message))->dontBroadcastToCurrentUser());
-		return $message;
+		$chat = Chat::firstOrCreate($chatData)->users()->saveMany([
+			Auth::id(),
+			$chatData['user_id'],
+		]);
+		return ChatIndexResource::make($chat);
 	}
 
-	public function show(Message $message)
+	public function show(Chat $chat)
 	{
+		return ChatShowResource::make($chat);
 	}
 
 	public function update(Request $request, Message $message)
 	{
+
 	}
 
 	public function destroy(Message $message)
 	{
+		$message->delete();
+		return MessageResource::make($message);
 	}
 }

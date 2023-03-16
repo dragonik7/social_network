@@ -14,7 +14,7 @@ class PostFactory extends Factory
 	public function definition(): array
 	{
 		$images = [];
-		for($countImages = 0; $countImages < random_int(1,3); $countImages++){
+		for ($countImages = 0; $countImages < random_int(1, 3); $countImages++) {
 			$images[] = fake()->imageUrl();
 		}
 		return [

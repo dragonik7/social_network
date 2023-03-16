@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -42,8 +43,15 @@ Route::group(['prefix' => '/posts'], function ()
 		Route::delete('/{post}', [PostsController::class, 'destroy'])->name('posts.delete');
 	});
 });
-Route::group(['prefix' => '/messages', 'middleware' => 'auth:sanctum'], function ()
+Route::group(['prefix' => '/chat', 'middleware' => 'auth:sanctum'], function ()
 {
-	Route::get('/', [ChatController::class, 'index'])->name('messages.index');
-	Route::post('/', [ChatController::class, 'store'])->name('messages.store');
+	Route::get('/', [ChatController::class, 'index'])->name('chat.index');
+	Route::post('/', [ChatController::class, 'store'])->name('chat.store');
+	Route::group(['prefix' => '/{chat}'], function ()
+	{
+		Route::get('/', [ChatController::class, 'show'])->name('chat.show');
+		Route::post('/', [MessageController::class, 'store'])->name('messages.store');
+		Route::post('/{message}/update', [MessageController::class, 'update'])->name('messages.update');
+		Route::delete('/{message}', [MessageController::class, 'delete'])->name('messages.delete');
+	});
 });

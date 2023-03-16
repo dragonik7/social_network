@@ -5,9 +5,9 @@ namespace App\Models;
 use App\Notifications\User\SendVerifyWithQueueNotification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -17,7 +17,7 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable implements MustVerifyEmail
 {
 
-	use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
+	use HasApiTokens, HasFactory, Notifiable, SoftDeletes, HasUuids;
 
 	/**
 	 * The attributes that are mass assignable.
@@ -59,6 +59,7 @@ class User extends Authenticatable implements MustVerifyEmail
 			set: fn($value) => $value,
 		);
 	}
+
 	public function password(): Attribute
 	{
 		return Attribute::make(
@@ -79,11 +80,11 @@ class User extends Authenticatable implements MustVerifyEmail
 
 	public function sender_messages(): HasMany
 	{
-		return $this->hasMany(Message::class, 'user_id', 'id');
+		return $this->hasMany(Message::class, 'from_user_id', 'id');
 	}
 
-	public function recipient_messages(): MorphMany
+	public function recipient_messages(): HasMany
 	{
-		return $this->morphMany(Message::class, 'messageable');
+		return $this->hasMany(Message::class, 'to_user_id', 'id');
 	}
 }

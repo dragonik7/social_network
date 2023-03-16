@@ -6,20 +6,19 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
 
-	public function up()
+	public function up(): void
 	{
-		Schema::create('posts', function (Blueprint $table)
+		Schema::create('chats', function (Blueprint $table)
 		{
 			$table->uuid('id')->primary();
-			$table->text('text')->nullable();
+			$table->string('name');
 			$table->json('images')->nullable();
-			$table->foreignUuid('user_id')->constrained('users')->cascadeOnUpdate()->cascadeOnDelete();
 			$table->timestamps();
 		});
 	}
 
-	public function down()
+	public function down(): void
 	{
-		Schema::dropIfExists('posts');
+		Schema::dropIfExists('chats');
 	}
 };

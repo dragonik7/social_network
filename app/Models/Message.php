@@ -2,26 +2,26 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Message extends Model
 {
 
-	use SoftDeletes;
+	use SoftDeletes, HasUuids, HasFactory;
 
-	protected $with     = ['user'];
-	protected $fillable = ['text', 'files', 'user_id', 'messageable_id', 'messageable_type'];
+	protected $fillable = ['text', 'files', 'user_id'];
 
-	public function messageable(): MorphTo
-	{
-		return $this->morphTo();
-	}
-
-	public function user(): BelongsTo
+	public function creator(): BelongsTo
 	{
 		return $this->belongsTo(User::class, 'user_id', 'id');
+	}
+
+	public function chat(): BelongsTo
+	{
+		return $this->belongsTo(Chat::class, 'chat_id', 'id');
 	}
 }

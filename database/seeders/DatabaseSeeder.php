@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Chat;
+use App\Models\Message;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -25,5 +27,8 @@ class DatabaseSeeder extends Seeder
 		User::factory(10)
 			->has(Post::factory(), 'posts')
 			->create();
+		Chat::factory(40)->create();
+		$this->call(ChatUserSeeder::class);
+		Message::factory(30)->create();
 	}
 }

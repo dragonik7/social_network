@@ -16,8 +16,6 @@ class Authenticate extends Middleware
 	 */
 	protected function redirectTo($request)
 	{
-		if (!$request->expectsJson()) {
-			return response(['Token is wrong'], 401);
-		}
+		return 'login';
 	}
 }
