@@ -22,6 +22,7 @@ class InfoUserResource extends JsonResource
 			'email'        => $this->email,
 			'avatar'       => $this->avatar,
 			'phone_number' => $this->phone_number,
+			'token'        => $this->token
 		];
 	}
 }
