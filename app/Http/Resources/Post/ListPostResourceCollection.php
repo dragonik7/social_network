@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /** @see \App\Models\Post */
-class PostListResourceCollection extends JsonResource
+class ListPostResourceCollection extends JsonResource
 {
 
 	/**
