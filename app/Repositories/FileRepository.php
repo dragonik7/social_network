@@ -13,7 +13,7 @@ class FileRepository implements FileInterface
 
 	public function saveFile(UploadedFile $file, string $path = ''): string
 	{
-		$fileName = Str::uuid() . Carbon::now('D') . '.' . $file->getClientOriginalExtension();
+		$fileName = Carbon::now('D')->format('y.m.d_H-i-s') . '_' . Str::uuid() . '.' . $file->getClientOriginalExtension();
 		return Storage::disk('public')->putFileAs($path, $file, $fileName);
 	}
 

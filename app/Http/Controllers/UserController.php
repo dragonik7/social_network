@@ -17,16 +17,19 @@ class UserController extends Controller
 	public function register(RegisterUserRequest $request, UserService $service)
 	{
 		$user = $service->register($request);
-		return InfoUserResource::make($user)->response()->header('Authorization', "Bearer ".$user->token);
+		return InfoUserResource::make($user)->response()->withCookie('Authorization', $user->token);
 	}
-	public function info(){
+
+	public function info()
+	{
 		return InfoUserResource::make(Auth::user());
 	}
 
 	public function login(LoginUserRequest $request, UserService $service)
 	{
 		$token = $service->login($request);
-		return LoginUserResource::make($token);
+		return LoginUserResource::make($token)->response()->withCookie('Authorization', $token->plainTextToken,
+			$token->accessToken->expires_at->diffInMinutes());
 	}
 
 	public function verify(EmailVerificationRequest $request)
@@ -43,7 +46,7 @@ class UserController extends Controller
 
 	public function deleteToken($id)
 	{
-		Auth::user()->tokens()->where('id','=', $id)->delete();
+		Auth::user()->tokens()->where('id', '=', $id)->delete();
 		return response()->json(['Success'], 200);
 	}
 }

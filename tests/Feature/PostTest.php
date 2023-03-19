@@ -4,26 +4,31 @@ namespace Tests\Feature;
 
 use App\Models\Post;
 use App\Models\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Carbon\Carbon;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class PostTest extends TestCase
 {
-	use DatabaseMigrations;
-	protected User $user;
+
+	use RefreshDatabase;
+
+	protected User  $user;
 	protected array $images;
+
 	protected function setUp(): void
 	{
 		parent::setUp();
 		$this->user = User::factory()->create();
-		for ($iterableImage = 0; $iterableImage < random_int(1,3); $iterableImage++){
+		for ($iterableImage = 0; $iterableImage < random_int(1, 3); $iterableImage++) {
 			$this->images[] = UploadedFile::fake()->image('photo.jpg');
 		}
 	}
 
-	public function testListPosts()
+	/** @test */
+	public function get_list_posts()
 	{
 		$this->artisan('db:seed');
 		$response = $this->get(route('posts.list'));
@@ -38,25 +43,38 @@ class PostTest extends TestCase
 			],
 		]);
 	}
-	public function testCreatePost(){
+
+	/** @test */
+	public function create_post()
+	{
 		Storage::fake('public');
-		$response = $this->actingAs($this->user)->post(route('posts.create'),[
-			'text' => fake()->sentence(),
+		$dataCreatePost = [
+			'text'   => fake()->sentence(),
+			'images' => $this->images,
+		];
+		$response = $this->actingAs($this->user)->post(route('posts.create'), $dataCreatePost);
+		$response->assertStatus(201);
+		$fileName = strstr(json_decode($response->content())->data->images[0], Carbon::now('D')->format('y.m.d'));
+		Storage::disk('public')->assertExists('post_photo/' . $fileName);
+	}
+
+	/** @test */
+	public function update_post()
+	{
+		$post = Post::factory()->create();
+		$response = $this->actingAs($this->user)->post(route('posts.update', $post->id), [
+			'text'   => fake()->sentence(),
 			'images' => $this->images,
 		]);
 		$response->assertStatus(201);
-		Storage::disk('public')->assertExists('postPhoto/' . $this->images[0]->hashname());
+		$date = Carbon::now('D')->format('y.m.d');
+		$fileName = strstr(json_decode($response->content())->data->images[0], $date);
+		Storage::disk('public')->assertExists('post_photo/' . $fileName);
 	}
-	public function testUpdatePost(){
-		$post = Post::factory()->create();
-		$response = $this->actingAs($this->user)->patch(route('posts.update', $post->id), [
-			'text' => fake()->sentence(),
-			'images' => $this->images
-		]);
-		$response->assertStatus(201);
-		Storage::disk('public')->assertExists('postPhoto/' . $this->images[0]->hashname());
-	}
-	public function testDeletePost(){
+
+	/** @test */
+	public function delete_post()
+	{
 		$post = Post::factory()->create();
 		$response = $this->actingAs($this->user)->delete(route('posts.delete', $post->id));
 		$response->assertStatus(204);

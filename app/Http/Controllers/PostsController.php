@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Post\PostCreateRequest;
 use App\Http\Requests\Post\PostUpdateRequest;
-use App\Http\Resources\Post\PostListResourceCollection;
+use App\Http\Resources\Post\ListPostResourceCollection;
 use App\Http\Resources\Post\PostShowResource;
 use App\Models\Post;
 use App\Repositories\Interface\FileInterface;
@@ -23,8 +23,7 @@ class PostsController extends Controller
 	public function getList()
 	{
 		$posts = Post::query()->paginate(10);
-		return PostListResourceCollection::collection($posts);
-
+		return ListPostResourceCollection::collection($posts);
 	}
 
 	public function store(PostCreateRequest $createRequest)

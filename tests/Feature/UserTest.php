@@ -4,12 +4,11 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use App\Notifications\User\SendVerifyWithQueueNotification;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
-use Laravel\Sanctum\PersonalAccessToken;
 use Tests\TestCase;
 
 class UserTest extends TestCase
@@ -26,7 +25,8 @@ class UserTest extends TestCase
 		Mail::fake();
 	}
 
-	public function testRegister()
+	/** @test */
+	public function registration_user()
 	{
 		$file = UploadedFile::fake()->image('avatar.jpg');
 		$response = $this->post(route('user.register'), [
@@ -37,7 +37,9 @@ class UserTest extends TestCase
 			'password'              => 'password',
 			'password_confirmation' => 'password',
 		]);
-		Storage::disk('public')->assertExists('avatar/' . $file->hashName());
+		$date = Carbon::now('D')->format('y.m.d');
+		$fileName = strstr(json_decode($response->content())->data->avatar, $date);
+		Storage::disk('public')->assertExists('avatar/' . $fileName);
 		$response->assertJsonStructure([
 			'data' => [
 				'id',
@@ -49,7 +51,8 @@ class UserTest extends TestCase
 		]);
 	}
 
-	public function testEmailVerify()
+	/** @test */
+	public function email_verify()
 	{
 		$notification = new SendVerifyWithQueueNotification();
 		$user = User::factory()->create(['email_verified_at' => null]);
@@ -63,14 +66,16 @@ class UserTest extends TestCase
 		$this->assertTrue(User::find($user->id)->hasVerifiedEmail());
 	}
 
-	public function testLogin()
+	/** @test */
+	public function login_user()
 	{
 		$response = $this->post(route('user.login'),
 			['email' => $this->user->email, 'password' => 'password']);
-		$response->assertHeader('Authorization');
+		$response->assertCookie('Authorization');
 	}
 
-	public function testTokens()
+	/** @test */
+	public function get_all_token_user()
 	{
 		for ($i = 0; $i < 3; $i++) {
 			$this->user->createToken('qwer');
@@ -88,10 +93,12 @@ class UserTest extends TestCase
 		]);
 	}
 
-	public function testDeleteToken()
+	/** @test */
+	public function delete_token_user()
 	{
 		$token = $this->user->createToken('qwer');
-		$response = $this->delete(route('user.delete-token', ['id' => $token->accessToken->id]), [],['Authorization' => 'Bearer ' . $token->plainTextToken]);
+		$response = $this->delete(route('user.delete-token', ['id' => $token->accessToken->id]), [],
+			['Authorization' => 'Bearer ' . $token->plainTextToken]);
 		$this->assertDatabaseMissing('personal_access_tokens', [
 			'id' => $token->accessToken->getKey(),
 		]);

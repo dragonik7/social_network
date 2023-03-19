@@ -9,7 +9,6 @@ const routes = [
 		beforeEnter: (to, from, next) => {
 			if (!localStorage.getItem('Bearer ')) {
 				next('/login')
-				console.log('При получении данных произошла ошибка, пожалуйста авторизуйтесь')
 			} else next()
 		},
 		children: [
@@ -50,7 +49,6 @@ const routes = [
 		name: "pages",
 		component: () => import('../components/Pages/PlugPage.vue'),
 	},
-
 	{
 		path: '/',
 		name: 'guest',
