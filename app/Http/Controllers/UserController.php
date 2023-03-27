@@ -17,7 +17,7 @@ class UserController extends Controller
 	public function register(RegisterUserRequest $request, UserService $service)
 	{
 		$user = $service->register($request);
-		return InfoUserResource::make($user)->response()->withCookie('Authorization', $user->token);
+		return InfoUserResource::make($user);
 	}
 
 	public function info()
@@ -28,8 +28,7 @@ class UserController extends Controller
 	public function login(LoginUserRequest $request, UserService $service)
 	{
 		$token = $service->login($request);
-		return LoginUserResource::make($token)->response()->withCookie('Authorization', $token->plainTextToken,
-			$token->accessToken->expires_at->diffInMinutes());
+		return LoginUserResource::make($token);
 	}
 
 	public function verify(EmailVerificationRequest $request)
