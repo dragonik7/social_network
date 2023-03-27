@@ -17,7 +17,7 @@ class UserController extends Controller
 	public function register(RegisterUserRequest $request, UserService $service)
 	{
 		$user = $service->register($request);
-		return InfoUserResource::make($user)->response()->withCookie('Authorization', $user->token);
+		return InfoUserResource::make($user);
 	}
 
 	public function info()

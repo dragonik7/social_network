@@ -16,11 +16,6 @@ class UserService
 
 	protected FileInterface $file;
 
-	public function __construct(FileInterface $file)
-	{
-		$this->file = $file;
-	}
-
 	public function register(RegisterUserRequest $request)
 	{
 		$data = $request->toArray();
@@ -28,15 +23,8 @@ class UserService
 			$data['avatar'] = $this->file->saveFile($data['avatar'], 'avatar');
 		}
 		$user = User::create($data);
-		if ($user) {
-			event(new Registered($user));
-			$user->token = $user->createToken(
-				name     : $request->ip() . "|" . $request->userAgent(),
-				expiresAt: Carbon::parse(Carbon::now()->add('3month'))
-			)->plainTextToken;
-			return $user;
-		}
-		throw new \HttpResponseException(response('', 500));
+		event(new Registered($user));
+		return $user;
 	}
 
 	public function login(LoginUserRequest $request)
