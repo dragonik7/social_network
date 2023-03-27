@@ -16,6 +16,11 @@ class UserService
 
 	protected FileInterface $file;
 
+	public function __construct(FileInterface $file)
+	{
+		$this->file = $file;
+	}
+
 	public function register(RegisterUserRequest $request)
 	{
 		$data = $request->toArray();

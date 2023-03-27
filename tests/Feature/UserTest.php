@@ -30,8 +30,8 @@ class UserTest extends TestCase
 	{
 		$file = UploadedFile::fake()->image('avatar.jpg');
 		$response = $this->post(route('user.register'), [
-			'name'                  => 'Shami',
-			'email'                 => 'Shamil79797@gmail.com',
+			'name'                  => fake()->name,
+			'email'                 => fake()->email,
 			'phone_number'          => '+74575823423',
 			'avatar'                => $file,
 			'password'              => 'password',
@@ -71,7 +71,12 @@ class UserTest extends TestCase
 	{
 		$response = $this->post(route('user.login'),
 			['email' => $this->user->email, 'password' => 'password']);
-		$response->assertCookie('Authorization');
+		$response->assertJsonStructure([
+			'data' => [
+				'token',
+				'expiredAt',
+			],
+		]);
 	}
 
 	/** @test */
