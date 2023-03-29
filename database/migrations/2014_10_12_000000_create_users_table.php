@@ -21,6 +21,7 @@ return new class extends Migration {
 			$table->string('avatar')->nullable();
 			$table->string('phone_number')->nullable();
 			$table->timestamp('email_verified_at')->nullable();
+			$table->foreignUuid('faculty_id')->constrained('faculties');
 			$table->string('password');
 			$table->rememberToken();
 			$table->softDeletes();

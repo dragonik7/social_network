@@ -13,6 +13,8 @@ return new class extends Migration {
 			$table->uuid('id')->primary();
 			$table->string('name');
 			$table->json('images')->nullable();
+			$table->foreignUuid('faculty_id')->constrained('faculties');
+			$table->foreignUuid('user_id')->constrained('users')->cascadeOnUpdate()->cascadeOnDelete();
 			$table->timestamps();
 		});
 	}

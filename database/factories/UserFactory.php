@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Faculty;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
@@ -25,6 +26,7 @@ class UserFactory extends Factory
 			'avatar'            => fake()->imageUrl(),
 			'phone_number'      => fake()->e164PhoneNumber(),
 			'email_verified_at' => now(),
+			'faculty_id'        => Faculty::query()->get()->random()->id,
 			'password'          => 'password', // password
 			'remember_token'    => Str::random(10),
 		];
